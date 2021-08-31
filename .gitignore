@@ -345,3 +345,8 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/intellij,java,windows,eclipse,visualstudiocode,sublimetext,jetbrains
+.idea/.gitignore
+.idea/Inflearn-kyh-Core-principles-of-spring.iml
+.idea/modules.xml
+.idea/runConfigurations.xml
+.idea/vcs.xml
