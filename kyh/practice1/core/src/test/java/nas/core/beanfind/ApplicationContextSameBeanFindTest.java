@@ -1,7 +1,5 @@
 package nas.core.beanfind;
 
-import nas.core.AppConfig;
-import nas.core.discount.DiscountPolicy;
 import nas.core.member.MemberRepository;
 import nas.core.member.MemoryMemberRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -12,7 +10,8 @@ import org.springframework.context.annotation.Bean;
 
 import java.util.Map;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class ApplicationContextSameBeanFindTest {
     AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext(SameBeanConfig.class);

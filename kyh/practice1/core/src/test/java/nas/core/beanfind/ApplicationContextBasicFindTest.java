@@ -3,7 +3,6 @@ package nas.core.beanfind;
 import nas.core.AppConfig;
 import nas.core.member.MemberService;
 import nas.core.member.MemberServiceImpl;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
