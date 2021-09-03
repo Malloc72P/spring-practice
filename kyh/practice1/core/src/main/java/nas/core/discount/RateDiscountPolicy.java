@@ -2,7 +2,9 @@ package nas.core.discount;
 
 import nas.core.member.Grade;
 import nas.core.member.Member;
+import org.springframework.stereotype.Component;
 
+@Component
 public class RateDiscountPolicy implements DiscountPolicy {
     private int discountPercent = 10;
 
