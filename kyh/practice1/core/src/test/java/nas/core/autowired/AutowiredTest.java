@@ -19,6 +19,15 @@ public class AutowiredTest {
 
     static class TestBean {
 
+        private final Member member;
+
+        TestBean(@Nullable Member member, Optional<Member> member2) {
+            System.out.println("TestBean.TestBean");
+            System.out.println("member = " + member);
+            System.out.println("member2 = " + member2);
+            this.member = member;
+        }
+
         //Member는 빈으로 등록되지 않았다.
         @Autowired(required = false)
         public void setNoBean1(Member member) {
