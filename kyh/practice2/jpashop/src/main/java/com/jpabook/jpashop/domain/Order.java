@@ -43,8 +43,57 @@ public class Order {
         member.getOrders().add(this);//연관관계의 상대측에도 자신의 객체를 넣는다
     }
 
+    public void addOrderItem(OrderItem orderItem) {
+        this.orderItems.add(orderItem);
+    }
+
     public void setDelivery(Delivery delivery) {
         this.delivery = delivery;
         delivery.setOrder(this);
+    }
+
+    /*
+     * 생성 메서드
+     * 관계가 얽혀있는 객체는 생성하는게 복잡하다
+     * 이러 z한 객체는 생성 메서드를 만드는게 좋다
+     * 연관관계, 주문시간 등의 필요한 정보들을 세팅하자
+     * 이러한 방식으로 하면 생성지점 변경시 생성메서드만 수정하면 된다
+     * */
+    public static Order createOrder(Member member, Delivery delivery, OrderItem... orderItems) {
+        Order order = new Order();
+        order.setMember(member);
+        order.setDelivery(delivery);
+        for (OrderItem orderItem : orderItems) {
+            order.addOrderItem(orderItem);
+        }
+        order.setStatus(OrderStatus.ORDER);
+        order.setOrderDate(LocalDateTime.now());
+        return order;
+    }
+
+    /*
+    * 주문 취소
+    * 이미 배송돈 상품은 취소 불가능
+    * */
+    public void cancel() {
+        if (delivery.getStatus() == DeliveryStatus.COMP) {
+            throw new IllegalStateException("이미 배송 완료된 상품은 취소가 불가능합니다");
+        }
+        this.setStatus(OrderStatus.CANCEL);
+        for (OrderItem orderItem : orderItems) {
+            orderItem.cancel();
+        }
+    }
+
+    /*
+     * 조회 로직
+     * 각각의 OrderItem에게 총 가격을 물어본다
+     * */
+    public int getTotalPrice() {
+        int totalPrice = 0;
+        for (OrderItem orderItem : orderItems) {
+            totalPrice += orderItem.getTotalPrice();
+        }
+        return totalPrice;
     }
 }
