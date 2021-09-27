@@ -60,11 +60,18 @@ public class OrderItem {
         return orderPrice * count;
     }
 
+    /*
+    * 주문상품 생성 메서드
+    *
+    * 상품을 주문하였으니 재고수량을 까야 함
+    * */
     public static OrderItem createOrderItem(Item item, int orderPrice, int count) {
         OrderItem orderItem = new OrderItem();
         orderItem.setItem(item);
         orderItem.setOrderPrice(orderPrice);
         orderItem.setCount(count);
+
+        item.removeStock(count);
         return orderItem;
     }
 }
