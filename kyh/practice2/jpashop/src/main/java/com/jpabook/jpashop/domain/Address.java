@@ -1,10 +1,12 @@
 package com.jpabook.jpashop.domain;
 
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Embeddable;
 
+@Getter
 @Embeddable//어딘가에 내장될 수 있음을 나타냄
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Address {
