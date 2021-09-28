@@ -22,7 +22,7 @@ public class ItemRepository {
         if (item.getId() == null) {
             entityManager.persist(item);
         } else {
-            entityManager.merge(item);
+            Item merge = entityManager.merge(item);
         }
     }
 
