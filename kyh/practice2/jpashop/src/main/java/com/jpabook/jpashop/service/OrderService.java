@@ -8,9 +8,12 @@ import com.jpabook.jpashop.domain.item.Item;
 import com.jpabook.jpashop.repository.ItemRepository;
 import com.jpabook.jpashop.repository.MemberRepository;
 import com.jpabook.jpashop.repository.OrderRepository;
+import com.jpabook.jpashop.repository.OrderSearch;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /*
 * 오더의 핵심 비즈니스 로직은 오더 클래스 안에 있다
@@ -80,6 +83,9 @@ public class OrderService {
     public void cancelOrder(Long orderId) {
         Order order = orderRepository.findOne(orderId);
         order.cancel();
+    }
 
+    public List<Order> findOrders(OrderSearch orderSearch) {
+        return orderRepository.findAllByCriteria(orderSearch);
     }
 }

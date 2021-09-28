@@ -28,7 +28,7 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<>();
 
-    @OneToOne(fetch = LAZY)
+    @OneToOne(fetch = LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "delivery_id")
     private Delivery delivery = new Delivery();
 
@@ -45,6 +45,7 @@ public class Order {
 
     public void addOrderItem(OrderItem orderItem) {
         this.orderItems.add(orderItem);
+        orderItem.setOrder(this);
     }
 
     public void setDelivery(Delivery delivery) {
@@ -55,7 +56,7 @@ public class Order {
     /*
      * 생성 메서드
      * 관계가 얽혀있는 객체는 생성하는게 복잡하다
-     * 이러 z한 객체는 생성 메서드를 만드는게 좋다
+     * 이러한 객체는 생성 메서드를 만드는게 좋다
      * 연관관계, 주문시간 등의 필요한 정보들을 세팅하자
      * 이러한 방식으로 하면 생성지점 변경시 생성메서드만 수정하면 된다
      * */
