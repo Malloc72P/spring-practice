@@ -37,11 +37,10 @@ public class HelloServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
 
         PrintWriter writer = response.getWriter();
-        StringBuilder sb = new StringBuilder();
-        sb.append("<h1>Hello</h1>")
-                .append("<h3>한글도 나오는지 테스트</h3>");
-        
+        String sb = "<h1>Hello</h1>" +
+                "<h3>한글도 나오는지 테스트</h3>";
+
         writer.println(sb);
-        
+
     }
 }

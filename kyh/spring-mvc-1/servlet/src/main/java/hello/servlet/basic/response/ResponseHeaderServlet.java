@@ -13,9 +13,9 @@ import java.io.PrintWriter;
 public class ResponseHeaderServlet extends HttpServlet {
 
     /*
-    * 응답객체의 헤더를 사용해본다
-    * 매직넘버대신 상수값을 사용하자 SC_OK
-    * */
+     * 응답객체의 헤더를 사용해본다
+     * 매직넘버대신 상수값을 사용하자 SC_OK
+     * */
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setStatus(HttpServletResponse.SC_OK);
@@ -38,8 +38,8 @@ public class ResponseHeaderServlet extends HttpServlet {
     }
 
     /*
-    * 사실 setHeader로 쿠키 설정이 가능한데, 그냥 쿠키객체를 만들어서 addCookie해도 헤더정보가 추가된다
-    * */
+     * 사실 setHeader로 쿠키 설정이 가능한데, 그냥 쿠키객체를 만들어서 addCookie해도 헤더정보가 추가된다
+     * */
     private void cookie(HttpServletResponse response) {
         Cookie cookie = new Cookie("myCookie", "good");
         cookie.setMaxAge(600);

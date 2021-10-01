@@ -15,9 +15,8 @@ import java.util.Map;
 public class MemberRepository {
 
     private static final MemberRepository instance = new MemberRepository();
-
-    private Map<Long, Member> store = new HashMap<>();
     private static long sequence = 0L;
+    private Map<Long, Member> store = new HashMap<>();
 
     public static MemberRepository getInstance() {
         return instance;

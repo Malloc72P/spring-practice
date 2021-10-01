@@ -1,8 +1,6 @@
 package hello.servlet.basic.request;
 
 
-import lombok.extern.slf4j.Slf4j;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
@@ -14,8 +12,8 @@ import java.io.IOException;
 @WebServlet(name = "requestHeaderServlet", urlPatterns = "/request-header")
 public class RequestHeaderServlet extends HttpServlet {
     /*
-    * 1. 참고로 public있는걸로 만들면 안된다
-    * */
+     * 1. 참고로 public있는걸로 만들면 안된다
+     * */
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         printStartLine(request);
