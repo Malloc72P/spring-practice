@@ -5,6 +5,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Map;
 
 public class MyView {
 
@@ -17,5 +18,19 @@ public class MyView {
     public void render(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher requestDispatcher = request.getRequestDispatcher(viewPath);
         requestDispatcher.forward(request, response);
+    }
+
+    public void render(Map<String, Object> model, HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        modelToRequestAttribute(model, request);
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher(viewPath);
+        requestDispatcher.forward(request, response);
+    }
+
+    /*
+    * 모델안의 내용을 request의 attribute에다가 전부 넣어줌
+    * */
+    private void modelToRequestAttribute(Map<String, Object> model, HttpServletRequest request) {
+        model.forEach(request::setAttribute);
     }
 }
