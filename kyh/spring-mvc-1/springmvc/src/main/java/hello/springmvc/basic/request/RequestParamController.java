@@ -112,7 +112,7 @@ public class RequestParamController {
      *
      * @param paramMap           모든 요청 파라미터는 여기에 담겨있습니다
      * @param paramMultiValueMap 모든 요청 파라미터는 여기에 담겨있습니다.
-     *                           값을 배열로 가지고 있어서 하나의 키에 여러 값이 있어도 괜찮습니다
+     *                           값을 리스트로 가지고 있어서 하나의 키에 여러 값이 있어도 괜찮습니다
      * @return dummy
      */
     @ResponseBody
