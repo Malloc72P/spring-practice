@@ -1,8 +1,10 @@
 package hello.springmvc.basic.request;
 
+import hello.springmvc.basic.HelloData;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -101,7 +103,7 @@ public class RequestParamController {
     @ResponseBody
     @RequestMapping("/request-param-required")
     public String requestParamRequired(
-            @RequestParam(required = true, defaultValue = "guest") String username,
+            @RequestParam(defaultValue = "guest") String username,
             @RequestParam(required = false, defaultValue = "-1") Integer age) {
         log.info("username : {}, age : {}", username, age);
         return "ok";
@@ -123,6 +125,37 @@ public class RequestParamController {
     ) {
         log.info("username : {}, age : {}", paramMap.get("username"), paramMap.get("age"));
         log.info("username : {}, age : {}", paramMultiValueMap.get("username"), paramMultiValueMap.get("age"));
+        return "ok";
+    }
+
+    /**
+     * 객체를 받으려면 RequestParam으로 요청 파라미터를 하나씩 받은 다음, 컨트롤러에서 직접 객체를 생성할 수 있습니다
+     * 하지만 너무 불편합니다. Spring MVC는 ModelAttribute를 사용해서 편하게 객체를 생성할 수 있습니다
+     * 요청파라미터의 이름으로 객체의 프로퍼티를 찾고, Setter를 호출해서 파라미터의 값을 객체에 입력합니다
+     * 프로퍼티는 필드를 말합니다. getter, setter로 프로퍼티에 접근할 수 있습니다
+     *
+     * @param data ModelAttribute를 통해 객체를 생성하고 요청파라미터를 객체의 프로퍼티에 넣습니다
+     * @return dummy
+     */
+    @ResponseBody
+    @RequestMapping("/model-attribute-v1")
+    public String modelAttributeV1(@ModelAttribute HelloData data) {
+        log.info("data : {}", data);
+        return "ok";
+    }
+
+    /**
+     * ModelAttribute도 생략가능합니다.
+     * ArgumentResolver로 지정해둔 타입은 RequestParam으로 처리하고, 그 외의 것은 ModelAttribute로 처리합니다
+     * Integer, String, int등의 타입을 RequestParam으로 처리합니다
+     *
+     * @param data ModelAttribute를 사용해서 요청파라미터로 객체를 생성합니다
+     * @return dummy
+     */
+    @ResponseBody
+    @RequestMapping("/model-attribute-v2")
+    public String modelAttributeV2(HelloData data) {
+        log.info("data : {}", data);
         return "ok";
     }
 }
