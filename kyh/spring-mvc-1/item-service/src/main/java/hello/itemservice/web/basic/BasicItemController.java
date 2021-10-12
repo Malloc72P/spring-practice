@@ -3,20 +3,23 @@ package hello.itemservice.web.basic;
 import hello.itemservice.domain.item.Item;
 import hello.itemservice.domain.item.ItemRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
 
 /**
- * 아이템 관련 요청을 처리하는 컨트롤러
+ * 상품 관련 요청을 처리하는 컨트롤러
  *
  * @author na seungchul
  */
+@Slf4j
 @Controller
 @RequestMapping("/basic/items")
 @RequiredArgsConstructor
@@ -35,10 +38,10 @@ public class BasicItemController {
     }
 
     /**
-     * 아이템 목록조회요청을 처리하는 컨트롤러
+     * 상품 목록조회요청을 처리하는 컨트롤러
      *
-     * @param model 모델 - 아이템목록인 items가 담긴다
-     * @return 뷰 네임 - 아이템목록페이지
+     * @param model 모델 - 상품목록인 items가 담긴다
+     * @return 뷰 네임 - 상품목록페이지
      */
     @GetMapping()
     public String items(Model model) {
@@ -47,10 +50,40 @@ public class BasicItemController {
         return "basic/items";
     }
 
+    /**
+     * 상품 상세조회 요청을 처리하는 컨트롤러
+     *
+     * @param itemId 상세조회할 상품의 아이디
+     * @param model  모델 - 조회된 상품이 담긴다
+     * @return 뷰 네임 - 상품 상세조회 페이지
+     */
     @GetMapping("/{itemId}")
     public String item(@PathVariable long itemId, Model model) {
         Item item = itemRepository.findById(itemId);
         model.addAttribute("item", item);
+        return "/basic/item";
+    }
+
+    /**
+     * 상품 등록 페이지 요청을 처리하는 컨트롤러
+     *
+     * @return 뷰 네임 - 상품등록페이지
+     */
+    @GetMapping("/add")
+    public String addForm() {
+        log.info("addForm");
+        return "/basic/addForm";
+    }
+
+    /**
+     * 상품 저장 요청을 처리하는 컨트롤러.
+     *
+     * @param item
+     * @return
+     */
+    @PostMapping("/add")
+    public String save(Item item) {
+        itemRepository.save(item);
         return "/basic/item";
     }
 }
