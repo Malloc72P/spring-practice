@@ -71,7 +71,6 @@ public class BasicItemController {
      */
     @GetMapping("/add")
     public String addForm() {
-        log.info("addForm");
         return "/basic/addForm";
     }
 
@@ -84,7 +83,7 @@ public class BasicItemController {
     @PostMapping("/add")
     public String save(Item item) {
         itemRepository.save(item);
-        return "/basic/item";
+        return "redirect:/basic/items/" + item.getId();
     }
 
     /**
@@ -111,7 +110,6 @@ public class BasicItemController {
     @PostMapping("/{itemId}/edit")
     public String edit(@PathVariable Long itemId, Item item) {
         itemRepository.update(itemId, item);
-
         return "redirect:/basic/items/{itemId}";
     }
 }
