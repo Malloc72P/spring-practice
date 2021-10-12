@@ -86,4 +86,32 @@ public class BasicItemController {
         itemRepository.save(item);
         return "/basic/item";
     }
+
+    /**
+     * 상품 수정 페이지 요청을 처리하는 컨트롤러
+     *
+     * @param itemId 수정할 상품의 아이디
+     * @param model  모델 - 수정할 상품의 정보가 담김
+     * @return 뷰 네임 - 상품수정페이지
+     */
+    @GetMapping("/{itemId}/edit")
+    public String editForm(@PathVariable Long itemId, Model model) {
+        Item item = itemRepository.findById(itemId);
+        model.addAttribute("item", item);
+        return "/basic/editForm";
+    }
+
+    /**
+     * 상품 수정 요청을 처리하는 컨트롤러
+     *
+     * @param itemId 수정할 상품의 아이디
+     * @param item   상품의 수정정보(이 정보로 수정함)
+     * @return 리다이렉션 -> 상품 상세보기 페이지
+     */
+    @PostMapping("/{itemId}/edit")
+    public String edit(@PathVariable Long itemId, Item item) {
+        itemRepository.update(itemId, item);
+
+        return "redirect:/basic/items/{itemId}";
+    }
 }
