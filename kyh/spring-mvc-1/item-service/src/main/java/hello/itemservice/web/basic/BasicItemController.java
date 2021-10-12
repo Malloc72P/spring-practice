@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
@@ -77,13 +78,16 @@ public class BasicItemController {
     /**
      * 상품 저장 요청을 처리하는 컨트롤러.
      *
-     * @param item 저장할 상품정보를 담은 변수(요청파라미터를 Item으로 변환함)
+     * @param item               저장할 상품정보를 담은 변수(요청파라미터를 Item으로 변환함)
+     * @param redirectAttributes 리다이렉션 추가정보 - 상세조회할 상품의 아이디와 저장성공여부가 담김
      * @return 뷰 네임 - 상품 상세 페이지
      */
     @PostMapping("/add")
-    public String save(Item item) {
-        itemRepository.save(item);
-        return "redirect:/basic/items/" + item.getId();
+    public String save(Item item, RedirectAttributes redirectAttributes) {
+        Item savedOne = itemRepository.save(item);
+        redirectAttributes.addAttribute("itemId", savedOne.getId());
+        redirectAttributes.addAttribute("status", true);
+        return "redirect:/basic/items/{itemId}";
     }
 
     /**
