@@ -38,4 +38,15 @@ public class BasicController {
         return "/basic/text-unescaped";
     }
 
+    /**
+     * 이스케이프 처리를 하지 않는 경우, 자바스크립트를 끼워넣을 수 있다
+     *
+     * @param model 테스트 데이터 전달용(자바스크립트가 들어있다)
+     * @return 이스케이프 처리를 하지 않는 뷰의 이름
+     */
+    @GetMapping("/text-accident")
+    public String noEscapeAccident(Model model) {
+        model.addAttribute("data", "<script type='application/javascript'>alert('kaboom!')</script>");
+        return "/basic/text-basic";
+    }
 }
