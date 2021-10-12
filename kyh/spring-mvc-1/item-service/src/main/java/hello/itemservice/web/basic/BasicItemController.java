@@ -78,8 +78,8 @@ public class BasicItemController {
     /**
      * 상품 저장 요청을 처리하는 컨트롤러.
      *
-     * @param item
-     * @return
+     * @param item 저장할 상품정보를 담은 변수(요청파라미터를 Item으로 변환함)
+     * @return 뷰 네임 - 상품 상세 페이지
      */
     @PostMapping("/add")
     public String save(Item item) {
