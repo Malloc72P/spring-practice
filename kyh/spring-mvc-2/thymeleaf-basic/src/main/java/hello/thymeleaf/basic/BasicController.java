@@ -145,4 +145,16 @@ public class BasicController {
         model.addAttribute("param2", "data2");
         return "/basic/link";
     }
+
+    /**
+     * 리터럴 예제에 대한 컨트롤러
+     *
+     * @param model 리터럴 예제에 필요한 데이터를 전달하는 모델객체
+     * @return 리터럴 예제에 대한 뷰의 이름
+     */
+    @GetMapping("/literal")
+    public String literal(Model model) {
+        model.addAttribute("data", "Spring!");
+        return "/basic/literal";
+    }
 }
