@@ -180,4 +180,30 @@ public class BasicController {
     public String attribute() {
         return "/basic/attribute";
     }
+
+    /**
+     * 타임리프 each 예제를 위한 컨트롤러
+     *
+     * @param model 테스트 데이터 전달용(List<User>users, 원소 3개)
+     * @return each 예제의 뷰 이름
+     */
+    @GetMapping("/each")
+    public String each(Model model) {
+        addUsers(model);
+        return "/basic/each";
+    }
+
+    /**
+     * 예제코드의 테스트 데이터 생성을 위한 메서드
+     *
+     * @param model 모델에 List<User> users를 만들어서 넣어준다(유저 3명 들어있음)
+     */
+    private void addUsers(Model model) {
+        List<User> list = new ArrayList<>();
+        list.add(new User("userA", 10));
+        list.add(new User("userB", 20));
+        list.add(new User("userC", 30));
+
+        model.addAttribute("users", list);
+    }
 }
