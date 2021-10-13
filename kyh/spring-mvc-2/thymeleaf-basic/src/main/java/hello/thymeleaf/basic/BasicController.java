@@ -2,11 +2,13 @@ package hello.thymeleaf.basic;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -92,4 +94,30 @@ public class BasicController {
         private String username;
         private int age;
     }
+
+    /**
+     * 타임리프에서 기본객체에 접근하는 예제에 대한 컨트롤러.<br>
+     * request, response, session 객체등에 접근해본다.<br>
+     * 참고로 HTTP 세션은 사용자가 브라우저를 종료하기 전까지 유지된다
+     *
+     * @param session 타임리프에서 접근해볼 세션객체
+     * @return 세션객체 예제가 있는 뷰의 이름
+     */
+    @GetMapping("/basic-objects")
+    public String basicObjects(HttpSession session) {
+        session.setAttribute("sessionData", "Hello Session");
+        return "/basic/basic-objects";
+    }
+
+    /**
+     * 타임리프는 뷰에서 빈에 바로 접근할 수 있다.<br>
+     * 예제에서 이 빈에 접근해본다
+     */
+    @Component("helloBean")
+    static class HelloBean {
+        public String hello(String data) {
+            return "Hello " + data;
+        }
+    }
+
 }
