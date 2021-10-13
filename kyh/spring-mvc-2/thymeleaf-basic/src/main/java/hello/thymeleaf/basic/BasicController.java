@@ -133,6 +133,12 @@ public class BasicController {
         return "/basic/date";
     }
 
+    /**
+     * 타임리프에서 링크를 입력할 때는 @{...} 표현식을 사용해야한다
+     *
+     * @param model 뷰에서 만들 링크에 필요한 파라미터를 담는다
+     * @return 링크표현식 예제에 대한 뷰의 이름
+     */
     @GetMapping("/link")
     public String link(Model model) {
         model.addAttribute("param1", "data1");
