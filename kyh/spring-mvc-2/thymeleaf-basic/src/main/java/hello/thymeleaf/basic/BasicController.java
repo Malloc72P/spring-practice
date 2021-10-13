@@ -158,6 +158,12 @@ public class BasicController {
         return "/basic/literal";
     }
 
+    /**
+     * 타임리프 연산 예제에 대한 컨트롤러
+     *
+     * @param model 데이터가 null인 경우와 아닌 경우를 테스트 해보기 위한 데이터를 전달한다
+     * @return 연산 예제에 대한 뷰의 이름
+     */
     @GetMapping("/operation")
     public String operation(Model model) {
         model.addAttribute("nullData", null);
