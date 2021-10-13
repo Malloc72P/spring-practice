@@ -171,6 +171,10 @@ public class BasicController {
         return "/basic/operation";
     }
 
+    /**
+     * 타임리프 속성설정 예제에 대한 컨트롤러
+     * @return 속성설정 예제 뷰의 이름
+     */
     @GetMapping("/attribute")
     public String attribute() {
         return "/basic/attribute";
