@@ -229,6 +229,11 @@ public class BasicController {
         return "/basic/block";
     }
 
+    /**
+     * 자바스크립트 인라인 예제에 대한 컨트롤러
+     * @param model 테스트 데이터 전달용(users와 user)
+     * @return 자바스크립트 인라인 예제의 뷰 이름
+     */
     @GetMapping("/javascript")
     public String javascript(Model model) {
         addUsers(model);
