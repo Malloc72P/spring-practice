@@ -229,6 +229,14 @@ public class BasicController {
         return "/basic/block";
     }
 
+    @GetMapping("/javascript")
+    public String javascript(Model model) {
+        addUsers(model);
+        model.addAttribute("user", new User("userD", 40));
+        return "/basic/javascript";
+    }
+
+
     /**
      * 예제코드의 테스트 데이터 생성을 위한 메서드
      *
