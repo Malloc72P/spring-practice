@@ -206,6 +206,30 @@ public class BasicController {
     }
 
     /**
+     * 타임리프 주석예제에 대한 컨트롤러
+     *
+     * @param model 테스트 데이터 전달용 모델객체
+     * @return 주석예제의 뷰 이름
+     */
+    @GetMapping("/comments")
+    public String comments(Model model) {
+        model.addAttribute("data", "Spring!");
+        return "/basic/comments";
+    }
+
+    /**
+     * 타임리프 블록예제에 대한 컨트롤러
+     *
+     * @param model 테스트 데이터 전달용(users, 원소 3개)
+     * @return 블록에제의 뷰 이름
+     */
+    @GetMapping("/block")
+    public String block(Model model) {
+        addUsers(model);
+        return "/basic/block";
+    }
+
+    /**
      * 예제코드의 테스트 데이터 생성을 위한 메서드
      *
      * @param model 모델에 List<User> users를 만들어서 넣어준다(유저 3명 들어있음)
@@ -217,17 +241,5 @@ public class BasicController {
         list.add(new User("userC", 30));
 
         model.addAttribute("users", list);
-    }
-
-    /**
-     * 타임리프 주석예제에 대한 컨트롤러
-     *
-     * @param model 테스트 데이터 전달용 모델객체
-     * @return 주석예제의 뷰 이름
-     */
-    @GetMapping("/comments")
-    public String comments(Model model) {
-        model.addAttribute("data", "Spring!");
-        return "/basic/comments";
     }
 }
