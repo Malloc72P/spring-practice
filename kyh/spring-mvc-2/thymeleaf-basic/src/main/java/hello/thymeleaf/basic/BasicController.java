@@ -184,13 +184,24 @@ public class BasicController {
     /**
      * 타임리프 each 예제를 위한 컨트롤러
      *
-     * @param model 테스트 데이터 전달용(List<User>users, 원소 3개)
+     * @param model 테스트 데이터 전달용(users, 원소 3개)
      * @return each 예제의 뷰 이름
      */
     @GetMapping("/each")
     public String each(Model model) {
         addUsers(model);
         return "/basic/each";
+    }
+
+    /**
+     * 조건부 평가 예제에 대한 컨트롤러
+     * @param model 테스트 데이터 전달용(users 원소 3개)
+     * @return 조건부 평가 예제의 뷰 이름
+     */
+    @GetMapping("/condition")
+    public String condition(Model model) {
+        addUsers(model);
+        return "/basic/condition";
     }
 
     /**
