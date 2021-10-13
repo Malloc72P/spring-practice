@@ -57,6 +57,12 @@ public class BasicController {
         return "/basic/text-basic";
     }
 
+    /**
+     * 타임리프에서 변수 사용예제에 대한 컨트롤러
+     *
+     * @param model 테스트 데이터 전달용(List, Map)
+     * @return 변수사용 예제가 있는 뷰의 이름
+     */
     @GetMapping("/variable")
     public String variable(Model model) {
         User userA = new User("userA", 10);
@@ -77,11 +83,13 @@ public class BasicController {
         return "/basic/variable";
     }
 
+    /**
+     * 타임리프 변수 사용예제를 위해 임시로 만든 클래스
+     */
     @Data
     @AllArgsConstructor
     static class User {
         private String username;
         private int age;
     }
-
 }
