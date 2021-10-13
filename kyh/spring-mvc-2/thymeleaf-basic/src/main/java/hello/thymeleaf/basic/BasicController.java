@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpSession;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -120,4 +121,15 @@ public class BasicController {
         }
     }
 
+    /**
+     * 타임리프에서 LocalDateTime을 다루는 방법에 대한 예제의 컨트롤러
+     *
+     * @param model 테스트 데이터 전달용(LocalDateTime)
+     * @return 타임리프에서 LocalDateTime을 다루는 방법에 대한 예제의 뷰의 이름
+     */
+    @GetMapping("/date")
+    public String date(Model model) {
+        model.addAttribute("localDateTime", LocalDateTime.now());
+        return "/basic/date";
+    }
 }
