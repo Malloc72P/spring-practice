@@ -3,13 +3,18 @@ package hello.itemservice.web.validation;
 import hello.itemservice.domain.item.Item;
 import hello.itemservice.domain.item.ItemRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+@Slf4j
 @Controller
 @RequestMapping("/validation/v1/items")
 @RequiredArgsConstructor
@@ -38,7 +43,36 @@ public class ValidationItemControllerV1 {
     }
 
     @PostMapping("/add")
-    public String addItem(@ModelAttribute Item item, RedirectAttributes redirectAttributes) {
+    public String addItem(@ModelAttribute Item item, RedirectAttributes redirectAttributes, Model model) {
+        //검증오류결과를 보관
+        Map<String, String> errors = new HashMap<>();
+
+        //검증 로직 - errors에 담은 데이터를 뷰에서 보여준다
+        if (!StringUtils.hasText(item.getItemName())) {
+            errors.put("itemName", "상품 이름은 필수입니다");
+        }
+        if (item.getPrice() == null || item.getPrice() > 1_000_000) {
+            errors.put("price", "가격은 1,000 ~ 1,000,000까지 허용합니다");
+        }
+        if (item.getQuantity() == null || item.getQuantity() >= 9999) {
+            errors.put("quantity", "수량은 최대 9,999까지 허용합니다");
+        }
+
+        //특정 필드가 아닌 복합 룰 검증
+        if (item.getPrice() != null && item.getQuantity() != null) {
+            int resultPrice = item.getPrice() * item.getQuantity();
+            if (resultPrice < 10_000) {
+                errors.put("globalError", "가격 * 수량의 합은 10_000 이상이어야 합니다. 현재 값 = " + resultPrice);
+            }
+        }
+        //검증에 실패하면 다시 입력폼으로 보낸다
+        if (!errors.isEmpty()) {
+            log.info("errors : {}", errors);
+            model.addAttribute("errors", errors);
+            return "validation/v1/addForm";
+        }
+
+        //에러에 안걸리면 아래의 로직을 수행함 - 성공 로직
         Item savedItem = itemRepository.save(item);
         redirectAttributes.addAttribute("itemId", savedItem.getId());
         redirectAttributes.addAttribute("status", true);
