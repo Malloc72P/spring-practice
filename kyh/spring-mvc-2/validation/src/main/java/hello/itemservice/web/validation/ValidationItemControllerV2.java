@@ -44,7 +44,7 @@ public class ValidationItemControllerV2 {
     }
 
     @PostMapping("/add")
-    public String addItem(@ModelAttribute Item item, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
+    public String addItem(@ModelAttribute Item item, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 
         //검증 로직 - bindingResult에 담은 데이터를 뷰에서 보여준다
         if (!StringUtils.hasText(item.getItemName())) {
