@@ -16,17 +16,18 @@ import javax.validation.constraints.NotNull;
 */
 public class Item {
 
+    @NotNull(groups = UpdateCheck.class)
     private Long id;
 
-    @NotBlank()
+    @NotBlank(groups = {SaveCheck.class, UpdateCheck.class})
     private String itemName;
 
-    @NotNull
+    @NotNull(groups = {SaveCheck.class, UpdateCheck.class})
     @Range(min = 1000, max = 1_000_000)
     private Integer price;
 
-    @NotNull
-    @Max(9999)
+    @NotNull(groups = {SaveCheck.class, UpdateCheck.class})
+    @Max(value = 9999, groups = SaveCheck.class)
     private Integer quantity;
 
     public Item() {
@@ -39,10 +40,20 @@ public class Item {
     }
 
     public boolean isTotalPriceInRange() {
+        if (isPriceAndQuantityNull()) {
+            return false;
+        }
         return totalPrice() > 10000;
     }
 
     public int totalPrice() {
+        if (isPriceAndQuantityNull()) {
+            return 0;
+        }
         return price * quantity;
+    }
+
+    public boolean isPriceAndQuantityNull() {
+        return price == null || quantity == null;
     }
 }
