@@ -44,10 +44,8 @@ public class ValidationItemControllerV3 {
 
     @PostMapping("/add")
     public String addItem(@Validated @ModelAttribute Item item, BindingResult bindingResult,
-                            RedirectAttributes redirectAttributes) {
-        if (!item.isTotalPriceInRange()) {
-            bindingResult.reject("totalPriceMin", new Object[]{10_000, item.totalPrice()}, null);
-        }
+                          RedirectAttributes redirectAttributes) {
+        validateTotalPriceMin(item, bindingResult);
         //검증에 실패하면 다시 입력폼으로 보낸다
         if (bindingResult.hasErrors()) {
             log.info("bindingResult : {}", bindingResult);
@@ -69,10 +67,22 @@ public class ValidationItemControllerV3 {
     }
 
     @PostMapping("/{itemId}/edit")
-    public String edit(@PathVariable Long itemId, @ModelAttribute Item item) {
+    public String edit(@PathVariable Long itemId, @Validated @ModelAttribute Item item, BindingResult bindingResult) {
+        validateTotalPriceMin(item, bindingResult);
+
+        if (bindingResult.hasErrors()) {
+            log.info("bindingResult : {}", bindingResult);
+            return "validation/v3/editForm";
+        }
+
         itemRepository.update(itemId, item);
         return "redirect:/validation/v3/items/{itemId}";
     }
 
+    private void validateTotalPriceMin(Item item, BindingResult bindingResult) {
+        if (!item.isTotalPriceInRange()) {
+            bindingResult.reject("totalPriceMin", new Object[]{10_000, item.totalPrice()}, null);
+        }
+    }
 }
 
