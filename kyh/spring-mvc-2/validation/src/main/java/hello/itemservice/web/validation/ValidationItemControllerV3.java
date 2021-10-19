@@ -6,12 +6,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -49,6 +45,9 @@ public class ValidationItemControllerV3 {
     @PostMapping("/add")
     public String addItem(@Validated @ModelAttribute Item item, BindingResult bindingResult,
                             RedirectAttributes redirectAttributes) {
+        if (!item.isTotalPriceInRange()) {
+            bindingResult.reject("totalPriceMin", new Object[]{10_000, item.totalPrice()}, null);
+        }
         //검증에 실패하면 다시 입력폼으로 보낸다
         if (bindingResult.hasErrors()) {
             log.info("bindingResult : {}", bindingResult);
