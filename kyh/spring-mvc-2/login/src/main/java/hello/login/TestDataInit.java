@@ -24,7 +24,7 @@ public class TestDataInit {
         itemRepository.save(new Item("itemA", 10000, 10));
         itemRepository.save(new Item("itemB", 20000, 20));
 
-        memberRepository.save(new Member("test", "test!", "테스터1"));
+        memberRepository.save(new Member("tester", "테스터", "1"));
     }
 
 }
