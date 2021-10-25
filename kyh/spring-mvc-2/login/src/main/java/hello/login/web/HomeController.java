@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -56,7 +57,7 @@ public class HomeController {
         return "loginhome";
     }
 
-    @GetMapping("/")
+//    @GetMapping("/")
     public String homeLoginV3(HttpServletRequest request, Model model) {
         //세션을 가져오되, 없으면 생성하지 않고 비로그인 홈으로 보낸다
         HttpSession session = request.getSession(false);
@@ -74,4 +75,24 @@ public class HomeController {
         model.addAttribute("member", loginMember);
         return "loginhome";
     }
+
+    /**
+     * request에서 세션객체를 얻고, 세션에서 값을 꺼내는 작업도 복잡하다 <br>
+     * 스프링은 @SessionAttribute를 제공해서 이 복잡함을 해결해준다 <br>
+     * 이 기능은 세션을 생성하지 않는다.
+     * @param loginMember 세션 어트리뷰트. 로그인 된 유저의 경우, null대신 회원정보가 있다.
+     * @param model 모델
+     * @return 로그인 유저는 로그인버전 홈, 비 로그인 유저는 일반 홈
+     */
+    @GetMapping("/")
+    public String homeLoginV3Spring(@SessionAttribute(name=SessionConst.LOGIN_MEMBER, required = false) Member loginMember,
+                                    Model model) {
+        if (loginMember == null) {
+            return "home";
+        }
+
+        model.addAttribute("member", loginMember);
+        return "loginhome";
+    }
+
 }
