@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -72,7 +73,7 @@ public class LoginController {
         return "redirect:/";
     }
 
-    @PostMapping("/login")
+    //    @PostMapping("/login")
     public String loginV3(@Valid @ModelAttribute LoginForm form, BindingResult bindingResult,
                           HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
@@ -89,6 +90,32 @@ public class LoginController {
         //getSession(true)면 세션 있으면 그대로 반환, 없으면 생성해서 반환
         //false면 있으면 반환, 없으면 null 반환함. 생성 안함
         request.getSession().setAttribute(SessionConst.LOGIN_MEMBER, loginMember);
+
+        return "redirect:/";
+    }
+
+    @PostMapping("/login")
+    public String loginV4(@Valid @ModelAttribute LoginForm form, BindingResult bindingResult,
+                          HttpServletRequest request,
+                          @RequestParam("redirectURL") String redirectURL) {
+        if (bindingResult.hasErrors()) {
+            return "/login/loginForm";
+        }
+
+        Member loginMember = loginService.login(form.getLoginId(), form.getPassword());
+        if (loginMember == null) {
+            bindingResult.reject("loginFail", "아이디 또는 비밀번호가 맞지 않습니다");
+            return "login/loginForm";
+        }
+
+        //세션이 있으면, 있는 세션을 반환하고, 없으면 생성해서 반환함
+        //getSession(true)면 세션 있으면 그대로 반환, 없으면 생성해서 반환
+        //false면 있으면 반환, 없으면 null 반환함. 생성 안함
+        request.getSession().setAttribute(SessionConst.LOGIN_MEMBER, loginMember);
+
+        if (redirectURL != null) {
+            return "redirect:" + redirectURL;
+        }
 
         return "redirect:/";
     }
