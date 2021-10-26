@@ -1,21 +1,21 @@
 package hello.exception.servlet;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
+
+import static javax.servlet.RequestDispatcher.*;
 
 @Slf4j
 @Controller
 public class ErrorPageController {
-
-    public static final String ERROR_EXCEPTION = "javax.servlet.error.exception";
-    public static final String ERROR_EXCEPTION_TYPE = "javax.servlet.error.exception_type";
-    public static final String ERROR_MESSAGE = "javax.servlet.error.message";
-    public static final String ERROR_REQUEST_URI = "javax.servlet.error.request_uri";
-    public static final String ERROR_SERVLET_NAME = "javax.servlet.error.servlet_name";
-    public static final String ERROR_STATUS_CODE = "javax.servlet.error.status_code";
 
     @RequestMapping("error-page/404")
     public String errorPage404(HttpServletRequest request) {
@@ -29,6 +29,19 @@ public class ErrorPageController {
         log.info("테스팅 : 500!");
         printError(request);
         return "error-page/500";
+    }
+
+    @RequestMapping(value = "/error-page/500", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Map<String, Object>> errorPage500API(HttpServletRequest request) {
+        log.info("errorPage500API");
+        Map<String, Object> result = new HashMap<>();
+        Exception ex = (Exception) request.getAttribute(ERROR_EXCEPTION);
+
+        result.put("status", request.getAttribute(ERROR_STATUS_CODE));
+        result.put("message", ex.getMessage());
+
+        Integer statusCode = (Integer) request.getAttribute(ERROR_STATUS_CODE);
+        return new ResponseEntity<>(result, HttpStatus.valueOf(statusCode));
     }
 
     private void printError(HttpServletRequest request) {
