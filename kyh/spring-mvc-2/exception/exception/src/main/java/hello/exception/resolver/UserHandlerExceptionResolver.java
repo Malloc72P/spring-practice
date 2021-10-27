@@ -39,7 +39,7 @@ public class UserHandlerExceptionResolver implements HandlerExceptionResolver {
                 }
             }
         } catch (Exception e) {
-            log.error("resolver ex ",e);
+            log.error("resolver ex ", e);
         }
         return null;
     }
