@@ -14,7 +14,10 @@ public class JpaMain {
 
 //        createMember(emf);
 //        updateMember(emf);
-        findAllByAgeCondition(emf);
+//        testCache(emf);
+//        testDirtyChecking(emf);
+//        testFlush(emf);
+//        testDetached(emf);
 
         emf.close();
     }
@@ -49,6 +52,46 @@ public class JpaMain {
             for (Member member : members) {
                 System.out.println("member = " + member);
             }
+        });
+    }
+
+    private static void testCache(EntityManagerFactory entityManagerFactory) {
+        doTransaction(entityManagerFactory, entityManager -> {
+            Member member1 = entityManager.find(Member.class, 1L);
+            Member member2 = entityManager.find(Member.class, 1L);
+            Member member3 = entityManager.find(Member.class, 1L);
+
+            System.out.println("member = " + member1);
+            System.out.println("member2 = " + member2);
+            System.out.println("member3 = " + member3);
+
+            if (member1 == member2 && member2 == member3) {
+                System.out.println("ok");
+            }
+        });
+    }
+
+    private static void testDirtyChecking(EntityManagerFactory entityManagerFactory) {
+        doTransaction(entityManagerFactory, entityManager -> {
+            Member member1 = entityManager.find(Member.class, 1L);
+            member1.setName("dirty-harry");
+        });
+    }
+
+    private static void testFlush(EntityManagerFactory entityManagerFactory) {
+        doTransaction(entityManagerFactory, entityManager -> {
+            Member member1 = entityManager.find(Member.class, 1L);
+            member1.setName("flushed");
+            entityManager.flush();
+            System.out.println("------------------------");
+        });
+    }
+
+    private static void testDetached(EntityManagerFactory entityManagerFactory) {
+        doTransaction(entityManagerFactory, entityManager -> {
+            Member member1 = entityManager.find(Member.class, 1L);
+            entityManager.detach(member1);
+            member1.setName("detached");
         });
     }
 
