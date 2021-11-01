@@ -1,4 +1,4 @@
-package hellojpa;
+package hellojpa.test1;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -7,17 +7,18 @@ import javax.persistence.Persistence;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class JpaMain {
+public class JpaMain1 {
 
     public static void main(String[] args) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
 
-//        createMember(emf);
+        createMember(emf);
 //        updateMember(emf);
 //        testCache(emf);
 //        testDirtyChecking(emf);
 //        testFlush(emf);
 //        testDetached(emf);
+        findAllByAgeCondition(emf);
 
         emf.close();
     }
@@ -35,7 +36,7 @@ public class JpaMain {
         doTransaction(emf, (entityManager) -> {
             Member member = entityManager.find(Member.class, 1L);
             System.out.println("member = " + member);
-            member.setName("new-name");
+            member.setUsername("new-name");
         });
     }
 
@@ -74,14 +75,14 @@ public class JpaMain {
     private static void testDirtyChecking(EntityManagerFactory entityManagerFactory) {
         doTransaction(entityManagerFactory, entityManager -> {
             Member member1 = entityManager.find(Member.class, 1L);
-            member1.setName("dirty-harry");
+            member1.setUsername("dirty-harry");
         });
     }
 
     private static void testFlush(EntityManagerFactory entityManagerFactory) {
         doTransaction(entityManagerFactory, entityManager -> {
             Member member1 = entityManager.find(Member.class, 1L);
-            member1.setName("flushed");
+            member1.setUsername("flushed");
             entityManager.flush();
             System.out.println("------------------------");
         });
@@ -91,7 +92,7 @@ public class JpaMain {
         doTransaction(entityManagerFactory, entityManager -> {
             Member member1 = entityManager.find(Member.class, 1L);
             entityManager.detach(member1);
-            member1.setName("detached");
+            member1.setUsername("detached");
         });
     }
 
