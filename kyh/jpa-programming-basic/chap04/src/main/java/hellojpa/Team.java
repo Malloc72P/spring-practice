@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Team extends BaseEntity{
+public class Team extends BaseEntity {
     @Id
     @GeneratedValue
     @Column(name = "TEAM_ID")
@@ -13,7 +13,7 @@ public class Team extends BaseEntity{
 
     private String name;
 
-//    @OneToMany(mappedBy = "team")
+    //    @OneToMany(mappedBy = "team")
     @OneToMany
     @JoinColumn(name = "TEAM_ID")
     private List<Member> members = new ArrayList<>();
