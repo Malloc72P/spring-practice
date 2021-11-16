@@ -18,9 +18,9 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "member")
     private List<MemberProduct> memberProducts = new ArrayList<>();
 
-    @OneToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "LOCKER_ID")
-    private Locker locker;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "TEAM_ID")
+    private Team team;
 
     public Long getId() {
         return id;
@@ -46,11 +46,12 @@ public class Member extends BaseEntity {
         this.memberProducts = memberProducts;
     }
 
-    public Locker getLocker() {
-        return locker;
+    public Team getTeam() {
+        return team;
     }
 
-    public void setLocker(Locker locker) {
-        this.locker = locker;
+    public void setTeam(Team team) {
+        this.team = team;
+        team.getMembers().add(this);
     }
 }
