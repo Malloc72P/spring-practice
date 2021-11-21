@@ -7,6 +7,10 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
+@NamedQuery(
+        name = "Member.findByUsername",
+        query = "select m from Member m where m.username = :username"
+)
 public class Member extends BaseEntity {
 
     @Id
@@ -16,6 +20,8 @@ public class Member extends BaseEntity {
 
     @Column(name = "USERNAME")
     private String username;
+
+    private int age;
 
     @OneToMany(mappedBy = "member")
     private List<MemberProduct> memberProducts = new ArrayList<>();
@@ -119,5 +125,21 @@ public class Member extends BaseEntity {
 
     public void setAddressHistory(List<Address> addressHistory) {
         this.addressHistory = addressHistory;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    @Override
+    public String toString() {
+        return "Member{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                '}';
     }
 }
