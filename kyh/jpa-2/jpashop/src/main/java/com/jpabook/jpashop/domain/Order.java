@@ -39,22 +39,6 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
-    //연관관계 메서드
-    public void setMember(Member member) {
-        this.member = member;//자신의 필드에도 넣는다
-        member.getOrders().add(this);//연관관계의 상대측에도 자신의 객체를 넣는다
-    }
-
-    public void addOrderItem(OrderItem orderItem) {
-        this.orderItems.add(orderItem);
-        orderItem.setOrder(this);
-    }
-
-    public void setDelivery(Delivery delivery) {
-        this.delivery = delivery;
-        delivery.setOrder(this);
-    }
-
     /*
      * 생성 메서드
      * 관계가 얽혀있는 객체는 생성하는게 복잡하다
@@ -74,10 +58,26 @@ public class Order {
         return order;
     }
 
+    //연관관계 메서드
+    public void setMember(Member member) {
+        this.member = member;//자신의 필드에도 넣는다
+        member.getOrders().add(this);//연관관계의 상대측에도 자신의 객체를 넣는다
+    }
+
+    public void addOrderItem(OrderItem orderItem) {
+        this.orderItems.add(orderItem);
+        orderItem.setOrder(this);
+    }
+
+    public void setDelivery(Delivery delivery) {
+        this.delivery = delivery;
+        delivery.setOrder(this);
+    }
+
     /*
-    * 주문 취소
-    * 이미 배송돈 상품은 취소 불가능
-    * */
+     * 주문 취소
+     * 이미 배송돈 상품은 취소 불가능
+     * */
     public void cancel() {
         if (delivery.getStatus() == DeliveryStatus.COMP) {
             throw new IllegalStateException("이미 배송 완료된 상품은 취소가 불가능합니다");

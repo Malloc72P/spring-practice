@@ -3,7 +3,6 @@ package com.jpabook.jpashop.domain.item;
 import com.jpabook.jpashop.domain.Category;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.web.util.NestedServletException;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -33,8 +32,8 @@ public abstract class Item {
     private List<Category> categories = new ArrayList<>();
 
     /*
-    * 재고수량 증가(stock 증가)
-    * */
+     * 재고수량 증가(stock 증가)
+     * */
     public void addStock(int quantity) {
         this.stockQuantity += quantity;
     }

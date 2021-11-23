@@ -27,10 +27,10 @@ public class OrderRepository {
     }
 
     /*
-    * JPQL로 처리하기
-    *
-    * 직접 분기처리해서 쿼리를 생성한다
-    * */
+     * JPQL로 처리하기
+     *
+     * 직접 분기처리해서 쿼리를 생성한다
+     * */
     public List<Order> findAllByString(OrderSearch orderSearch) { //language=JPAQL
         String jpql = "select o From Order o join o.member m";
         boolean isFirstCondition = true;
@@ -66,9 +66,9 @@ public class OrderRepository {
     }
 
     /*
-    * 크리테리아를 사용해서 쿼리를 생성한다
-    * 가독성이 안좋다는 문제는 해결되지 않았다
-    * */
+     * 크리테리아를 사용해서 쿼리를 생성한다
+     * 가독성이 안좋다는 문제는 해결되지 않았다
+     * */
     public List<Order> findAllByCriteria(OrderSearch orderSearch) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Order> criteriaQuery = criteriaBuilder.createQuery(Order.class);
@@ -90,5 +90,13 @@ public class OrderRepository {
         criteriaQuery.where(criteriaBuilder.and(criteria.toArray(new Predicate[criteria.size()])));
         TypedQuery<Order> query = entityManager.createQuery(criteriaQuery).setMaxResults(1000);
         return query.getResultList();
+    }
+
+    public List<Order> findAllWithMemberDelivery() {
+        return entityManager.createQuery(
+                "select o from Order o " +
+                        "join fetch o.member m " +
+                        "join fetch o.delivery d", Order.class
+        ).getResultList();
     }
 }

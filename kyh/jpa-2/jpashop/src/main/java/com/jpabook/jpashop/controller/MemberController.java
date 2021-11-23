@@ -24,10 +24,10 @@ public class MemberController {
     private final MemberService memberService;
 
     /* 회원등록 폼 요청을 처리
-    * 회원등록하는 페이지를 응답한다
-    * 스프링 MVC에서 Model은 애플리케이션의 데이터를 담는 컨테이너의 역할을 한다
-    * 컨트롤러는 뷰에 데이터를 넘겨줄 상황이 많은데, 모델에 담아서 넘겨준다
-    * */
+     * 회원등록하는 페이지를 응답한다
+     * 스프링 MVC에서 Model은 애플리케이션의 데이터를 담는 컨테이너의 역할을 한다
+     * 컨트롤러는 뷰에 데이터를 넘겨줄 상황이 많은데, 모델에 담아서 넘겨준다
+     * */
     @GetMapping("/new")
     public String createForm(Model model) {
         model.addAttribute("memberForm", new MemberForm());

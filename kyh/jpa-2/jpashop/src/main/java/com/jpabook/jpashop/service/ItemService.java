@@ -16,8 +16,8 @@ public class ItemService {
     private final ItemRepository itemRepository;
 
     /*
-    * 아이템 저장 메서드
-    * */
+     * 아이템 저장 메서드
+     * */
     @Transactional
     public void saveItem(Item item) {
         itemRepository.save(item);
