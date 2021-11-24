@@ -14,8 +14,10 @@ spring:
     hibernate:
       ddl-auto: create # 실행시점에 내가 가진 엔티티정보를 보고 다 지운다음 다시 생성함
     properties:
-      #show_sql: true #이건 sout으로 로그를 찍기 때문에 안쓰는게 좋다
-      format_sql: true
+      hibernate:
+        #show_sql: true #이건 sout으로 로그를 찍기 때문에 안쓰는게 좋다
+        format_sql: true
+        default_batch_fetch_size: 100
 logging:
   level:
     org.hibernate.SQL: debug
