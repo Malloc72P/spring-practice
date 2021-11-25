@@ -18,6 +18,7 @@ spring:
         #show_sql: true #이건 sout으로 로그를 찍기 때문에 안쓰는게 좋다
         format_sql: true
         default_batch_fetch_size: 100
+#    open-in-view: false
 logging:
   level:
     org.hibernate.SQL: debug
