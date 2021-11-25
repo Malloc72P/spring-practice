@@ -2,6 +2,7 @@ package com.jpabook.jpashop.service;
 
 import com.jpabook.jpashop.domain.Member;
 import com.jpabook.jpashop.repository.MemberRepository;
+import com.jpabook.jpashop.repository.OldMemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -80,7 +81,7 @@ public class MemberService {
     }
 
     public Member findOne(Long memberId) {
-        return memberRepository.findOne(memberId);
+        return memberRepository.findById(memberId).get();
     }
 
     @Transactional

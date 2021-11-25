@@ -1,7 +1,9 @@
 package com.jpabook.jpashop.repository;
 
-import com.jpabook.jpashop.domain.Member;
 import com.jpabook.jpashop.domain.Order;
+import com.jpabook.jpashop.domain.*;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
@@ -11,6 +13,9 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.jpabook.jpashop.domain.QMember.member;
+import static com.jpabook.jpashop.domain.QOrder.order;
 
 @Repository
 @RequiredArgsConstructor
@@ -118,5 +123,44 @@ public class OrderRepository {
                 .setFirstResult(offset)
                 .setMaxResults(limit)
                 .getResultList();
+    }
+
+    public List<Order> findAll() {
+        QOrder order = QOrder.order;
+        QMember member = QMember.member;
+
+        JPAQueryFactory query = new JPAQueryFactory(entityManager);
+
+        return query.select(order)
+                .from(order)
+                .join(order.member, member)
+                .limit(1000)
+                .fetch();
+    }
+
+    public List<Order> findAll(OrderSearch orderSearch) {
+        JPAQueryFactory query = new JPAQueryFactory(entityManager);
+
+        return query.select(order)
+                .from(order)
+                .join(order.member, member)
+                .where(statusEq(orderSearch.getOrderStatus()),
+                        nameLike(orderSearch.getMemberName()))
+                .limit(1000)
+                .fetch();
+    }
+
+    private BooleanExpression nameLike(String memberName) {
+        if (!StringUtils.hasText(memberName)) {
+            return null;
+        }
+        return member.name.like(memberName);
+    }
+
+    private BooleanExpression statusEq(OrderStatus statusCondition) {
+        if (statusCondition == null) {
+            return null;
+        }
+        return order.status.eq(statusCondition);
     }
 }
