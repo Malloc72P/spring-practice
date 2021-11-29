@@ -6,6 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import study.datajpa.dto.MemberDto;
 import study.datajpa.entity.Member;
@@ -22,6 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Transactional
+@Rollback(false)
 class MemberRepositoryTest {
 
     @PersistenceContext
@@ -314,5 +316,29 @@ class MemberRepositoryTest {
             System.out.println("member.getUsername() = " + member.getUsername());
             System.out.println("team = " + member.getTeam().getName());
         }
+    }
+
+    @Test
+    void queryHint() {
+        Member member1 = new Member("member1", 10);
+        memberRepository.save(member1);
+
+        em.flush();
+        em.clear();
+
+        Member findMember = memberRepository.findReadOnlyByUsername("member1");
+        findMember.setUsername("member2");
+    }
+
+    @Test
+    void queryLock() {
+        Member member1 = new Member("member1", 10);
+        memberRepository.save(member1);
+
+        em.flush();
+        em.clear();
+
+        Member findMember = memberRepository.findLockByUsername("member1");
+        findMember.setUsername("member2");
     }
 }
