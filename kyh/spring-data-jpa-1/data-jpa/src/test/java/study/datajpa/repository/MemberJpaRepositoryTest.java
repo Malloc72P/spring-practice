@@ -19,7 +19,7 @@ class MemberJpaRepositoryTest {
     MemberJpaRepository memberJpaRepository;
 
     @Test
-    public void testMember() {
+    void testMember() {
         Member member = new Member("memberA");
         Member savedMember = memberJpaRepository.save(member);
 
@@ -38,7 +38,7 @@ class MemberJpaRepositoryTest {
     }
 
     @Test
-    public void basicCRUD() {
+    void basicCRUD() {
         Member member1 = new Member("member1");
         Member member2 = new Member("member2");
 
@@ -62,7 +62,7 @@ class MemberJpaRepositoryTest {
     }
 
     @Test
-    public void findByUsernameAndAgeGreaterThen() {
+    void findByUsernameAndAgeGreaterThen() {
         Member m1 = new Member("AAA", 20);
         Member m2 = new Member("BBB", 10);
 
@@ -73,5 +73,18 @@ class MemberJpaRepositoryTest {
         assertThat(result.get(0).getUsername()).isEqualTo("AAA");
         assertThat(result.get(0).getAge()).isGreaterThan(15);
         assertThat(result.size()).isEqualTo(1);
+    }
+
+    @Test
+    void findByUsername() {
+        Member m1 = new Member("AAA", 20);
+        Member m2 = new Member("BBB", 10);
+
+        memberJpaRepository.save(m1);
+        memberJpaRepository.save(m2);
+
+        List<Member> result = memberJpaRepository.findByUsername("AAA");
+        assertThat(result.get(0).getUsername()).isEqualTo("AAA");
+        assertThat(result.size()).isEqualTo(1); 
     }
 }
