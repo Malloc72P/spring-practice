@@ -3,11 +3,17 @@ package study.datajpa.repository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 import study.datajpa.dto.MemberDto;
 import study.datajpa.entity.Member;
 import study.datajpa.entity.Team;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -18,6 +24,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 @Transactional
 class MemberRepositoryTest {
+
+    @PersistenceContext
+    private EntityManager em;
 
     @Autowired
     private MemberRepository memberRepository;
@@ -156,5 +165,71 @@ class MemberRepositoryTest {
         assertThat(optionalMember.get()).isSameAs(m1);
 
         assertThat(member).isSameAs(m1);
+    }
+
+    @Test
+    void paging() {
+        List<Member> members = Arrays.asList(
+                new Member("m1", 10),
+                new Member("m2", 10),
+                new Member("m3", 10),
+                new Member("m4", 10),
+                new Member("m5", 10),
+                new Member("m6", 10),
+                new Member("m7", 10)
+        );
+        memberRepository.saveAll(members);
+
+        int age = 10;
+        int pageNum = 0;
+        int size = 3;
+
+        PageRequest pageRequest = PageRequest.of(pageNum, size, Sort.by(Sort.Direction.DESC, "username"));
+
+        Page<Member> memberPage = memberRepository.findByAge(age, pageRequest);
+
+        //페이지 개수 계산
+        assertThat(memberPage.getTotalPages()).isEqualTo(3);
+
+        //현재 페이지 계산
+        assertThat(memberPage.getNumber()).isEqualTo(0);
+
+        //첫번째, 마지막 페이지인지, 그리고 다음 페이지 있는지 검증
+        assertThat(memberPage.isFirst()).isTrue();
+        assertThat(memberPage.hasNext()).isTrue();
+        assertThat(memberPage.isLast()).isFalse();
+
+        //컨텐츠 조회
+        assertThat(memberPage.getContent().size()).isEqualTo(3);
+        assertThat(memberPage.getContent()).contains(
+                members.get(6),
+                members.get(5),
+                members.get(4));
+
+        //전체 엘리먼트 개수 조회
+        assertThat(memberPage.getTotalElements()).isEqualTo(7);
+
+        Page<MemberDto> memberDtoPage = memberPage
+                .map(member -> new MemberDto(member.getId(), member.getUsername(), null));
+    }
+
+    @Test
+    void bulkUpdate() {
+        List<Member> members = Arrays.asList(
+                new Member("m1", 20),
+                new Member("m2", 20),
+                new Member("m3", 20),
+                new Member("m4", 20),
+                new Member("m5", 20),
+                new Member("m6", 20),
+                new Member("m7", 20)
+        );
+        memberRepository.saveAll(members);
+
+        int i = memberRepository.bulkAgePlus(20);
+        assertThat(i).isEqualTo(7);
+
+        List<Member> m7 = memberRepository.findByUsername("m7");
+        assertThat(m7.get(0).getAge()).isEqualTo(21);
     }
 }

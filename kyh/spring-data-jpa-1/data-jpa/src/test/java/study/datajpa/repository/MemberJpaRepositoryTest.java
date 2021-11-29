@@ -3,16 +3,18 @@ package study.datajpa.repository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import study.datajpa.entity.Member;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Transactional
-//@Rollback(value = false)
+@Rollback(value = false)
 class MemberJpaRepositoryTest {
 
     @Autowired
@@ -85,6 +87,44 @@ class MemberJpaRepositoryTest {
 
         List<Member> result = memberJpaRepository.findByUsername("AAA");
         assertThat(result.get(0).getUsername()).isEqualTo("AAA");
-        assertThat(result.size()).isEqualTo(1); 
+        assertThat(result.size()).isEqualTo(1);
+    }
+
+    @Test
+    void paging() {
+        memberJpaRepository.save(new Member("m1", 10));
+        memberJpaRepository.save(new Member("m2", 10));
+        memberJpaRepository.save(new Member("m3", 10));
+        memberJpaRepository.save(new Member("m4", 10));
+        memberJpaRepository.save(new Member("m5", 10));
+        memberJpaRepository.save(new Member("m6", 10));
+        memberJpaRepository.save(new Member("m7", 10));
+
+        int age = 10;
+        int offset = 0;
+        int limit = 3;
+
+        List<Member> members = memberJpaRepository.findByPage(age, offset, limit);
+        long totalCount = memberJpaRepository.totalCount(age);
+
+        assertThat(members.size()).isEqualTo(3);
+        assertThat(totalCount).isEqualTo(7);
+    }
+
+    @Test
+    void bulkUpdate() {
+        List<Member> members = Arrays.asList(
+                new Member("m1", 20),
+                new Member("m2", 20),
+                new Member("m3", 20),
+                new Member("m4", 20),
+                new Member("m5", 20),
+                new Member("m6", 20),
+                new Member("m7", 20)
+        );
+        members.forEach(memberJpaRepository::save);
+
+        int i = memberJpaRepository.bulkAgePlus(20);
+        assertThat(i).isEqualTo(7);
     }
 }
