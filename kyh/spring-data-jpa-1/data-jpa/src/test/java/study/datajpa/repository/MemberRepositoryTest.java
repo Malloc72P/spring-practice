@@ -35,6 +35,9 @@ class MemberRepositoryTest {
     @Autowired
     private TeamRepository teamRepository;
 
+    @Autowired
+    private MemberQueryRepository memberQueryRepository;
+
     @Test
     public void testMember() {
         System.out.println("memberRepository.getClass() = " + memberRepository.getClass());
@@ -340,5 +343,10 @@ class MemberRepositoryTest {
 
         Member findMember = memberRepository.findLockByUsername("member1");
         findMember.setUsername("member2");
+    }
+
+    @Test
+    public void callCustom() {
+        List<Member> result = memberRepository.findMemberCustom();
     }
 }
