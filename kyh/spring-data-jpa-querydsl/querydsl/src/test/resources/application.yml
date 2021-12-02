@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: local
+    active: test
   datasource:
     url: jdbc:h2:tcp://localhost/~/querydsl
     #MVCC = true를 하면 여러 개가 한번에 접근했을 때 빠른 처리가 가능(권장된다고 함)
