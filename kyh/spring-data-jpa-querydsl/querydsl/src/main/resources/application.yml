@@ -18,7 +18,7 @@ spring:
         format_sql: true
         jdbc:
           batch_size: 100
-logging:
-  level:
-    org.hibernate.SQL: debug
-    org.hibernate.type: trace
+#logging:
+#  level:
+#    org.hibernate.SQL: debug
+#    org.hibernate.type: trace
