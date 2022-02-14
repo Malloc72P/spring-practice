@@ -1,4 +1,4 @@
-# Inflearn-kyh-Core-principles-of-spring
+# Spring Practice
 김영한님의 스프링의 핵심원리를 듣고 따라쳐보는 프로젝트입니다
 
 # 프로젝트-1
